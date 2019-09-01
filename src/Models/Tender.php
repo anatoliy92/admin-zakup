@@ -1,5 +1,6 @@
 <?php namespace Avl\AdminZakup\Models;
 
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\ModelTrait;
@@ -53,6 +54,11 @@ class Tender extends Model
         return Media::whereModel('Avl\AdminZakup\Models\Tender')->where('model_id', $this->id)->where('type', 'hideFile');
     }
 
+    public function confirmed()
+    {
+        return $this->hasMany('Avl\AdminZakup\Models\ConfirmTender', 'tender_id', 'id');
+    }
+
     public function getUpdatedAtAttribute($value)
     {
         return (!is_null($this->updated_date)) ? $this->updated_date : $value;
@@ -94,5 +100,20 @@ class Tender extends Model
     public function isOld()
     {
         return $this->until_date < Carbon::now();
+    }
+
+    public function isConfirmed($user) {
+        if (empty($user)) {
+            return false;
+        }
+
+        $confirmed = $this->confirmed->where('contract_id', $user->id)->where('confirm', 1)->all();
+
+        return !empty($confirmed);
+    }
+
+    public function isAllowConfirm()
+    {
+        return Carbon::now()->add('-1', 'day')->greaterThan($this->until_date);
     }
 }
