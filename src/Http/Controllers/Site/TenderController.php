@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use File;
 use Api;
+use View;
 use Illuminate\Http\Request;
 
 class TenderController extends SectionsController
