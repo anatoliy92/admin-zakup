@@ -33,5 +33,11 @@ Route::group(
             function () {
                 Route::get('zakup/registration', 'RegistrationController@index')->name('site.zakup.registration.index');
                 Route::post('zakup/registration', 'RegistrationController@registration')->name('site.zakup.registration.registration');
+                Route::get('zakup/{alias}/', 'TenderController@index')->name('site.zakup.index');
+                Route::get('zakup/{alias}/{id}', 'TenderController@show')->name('site.zakup.show')->where('id', '[0-9]+');
+                Route::get('zakup/{alias}/{id}/confirm', 'TenderController@confirm')->name('site.zakup.confirm')->where('id', '[0-9]+');
+                Route::get('zakup/{alias}/rubrics', 'TenderController@rubrics')->name('site.zakup.rubrics');
+                Route::get('zakup/{alias}/rubrics/{rubric}', 'TenderController@rubricsShow')->name(
+                    'site.zakup.rubrics.show')->where('rubric', '[0-9]+');
             });
     });

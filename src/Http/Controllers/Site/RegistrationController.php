@@ -16,7 +16,7 @@ class RegistrationController extends BaseController
     {
         $user = Auth::user();
 
-        if (!empty($user) && !empty($user->contractor)) {
+        if (!empty($user) && $user->isContractor()) {
             return redirect("/");
         }
 

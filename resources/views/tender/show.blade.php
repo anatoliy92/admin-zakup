@@ -36,8 +36,8 @@
 			</br>
 
 			<ul class="nav nav-tabs" role="tablist">
-				<li class="nav-item"><a class="nav-link active show" href="#short" data-toggle="tab">Короткая новость</a></li>
-				<li class="nav-item"><a class="nav-link" href="#full" data-toggle="tab">Полная новость</a></li>
+				<li class="nav-item"><a class="nav-link active show" href="#short" data-toggle="tab">Короткая информация</a></li>
+				<li class="nav-item"><a class="nav-link" href="#full" data-toggle="tab">Полная информация</a></li>
 			</ul>
 			<div class="tab-content">
 				<div class="tab-pane" id="full" role="tabpanel">
@@ -52,7 +52,7 @@
 						@foreach ($langs as $lang)
 							<div class="tab-pane @if($lang->key == "ru") active show @endif"  id="full_{{ $lang->key }}" role="tabpanel">
 								@if ($new->{'full_' . $lang->key} == "")
-									<span class="form-control">Нет полной новости на данном языке</span>
+									<span class="form-control">Нет полного описания закупки на данном языке</span>
 								@else
 									<span class="form-control">{{$new->{'full_' . $lang->key} }}</span>
 								@endif
@@ -73,7 +73,7 @@
 							@foreach ($langs as $lang)
 								<div class="tab-pane @if($lang->key == "ru") active show @endif"  id="short_{{$lang->key}}" role="tabpanel">
 									@if ($new->{'short_' . $lang->key} == "")
-										<span class="form-control">Нет короткой новости на данном языке</span>
+										<span class="form-control">Нет короткой описания закупки на данном языке</span>
 									@else
 										<span class="form-control">{{ $new->{'short_' . $lang->key} }}</span>
 									@endif
