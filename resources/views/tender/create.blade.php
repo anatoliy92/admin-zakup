@@ -46,7 +46,7 @@
 					</div>
 					<div class="col-12 col-sm-3">
 						<div class="form-group">
-							{{ Form::label(null, 'Дата окончания публикации') }}
+							{{ Form::label(null, 'Дата завершения тендера') }}
 							<div class="controls">
 								<div class="input-prepend input-group">
 									<div class="input-group-prepend">
