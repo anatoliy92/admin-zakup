@@ -114,6 +114,6 @@ class Tender extends Model
 
     public function isAllowConfirm()
     {
-        return Carbon::now()->add('-1', 'day')->greaterThan($this->until_date);
+        return Carbon::now()->add('-1', 'day')->lessThan($this->until_date);
     }
 }
