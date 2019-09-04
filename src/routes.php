@@ -23,6 +23,13 @@ Route::group(
         Route::post('sections/{id}/zakup/move/{zakup}', 'TenderController@moveSave')->name('sections.zakup.move.save');
 
         Route::resource('sections/{id}/zakup', 'TenderController', ['as' => 'sections']);
+
+        Route::get('tender/contractor', 'ContractorController@index')->name('tender.contractor');
+        Route::get('tender/contractor/{id}', 'ContractorController@show')->name('tender.contractor.show');
+        Route::get('tender/contractor/{id}/block', 'ContractorController@block')->name('tender.contractor.block');
+        Route::get('tender/contractor/{id}/unblock', 'ContractorController@unblock')->name('tender.contractor.unblock');
+        Route::get('tender/contractor/{id}/remove', 'ContractorController@remove')->name('tender.contractor.remove');
+
     });
 
 Route::group(
