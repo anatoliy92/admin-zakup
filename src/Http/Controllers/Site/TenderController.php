@@ -70,7 +70,7 @@ class TenderController extends SectionsController
 
 
         if (isset($response->success) && $response->success == 'ok') {
-            return redirect()->back()->with('success', true);
+            return redirect()->back()->with('success', ['Вы стали участником тендера']);
         }
 
         return redirect()->back()->with('error', true);
