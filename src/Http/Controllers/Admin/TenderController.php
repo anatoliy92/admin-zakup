@@ -175,6 +175,21 @@ class TenderController extends AvlController
             ]);
     }
 
+    public function contractors($id, $zakup_id)
+    {
+        $section = Sections::whereId($id)->firstOrFail();
+        $tender = Tender::findOrFail($zakup_id);
+
+        return view(
+            'adminzakup::tender.contractors',
+            [
+                'langs' => $this->langs,
+                'tender' => $tender,
+                'contractors' => $tender->confirmed()->paginate(30),
+                'id'    => $id
+            ]);
+    }
+
     /**
      * Форма открытия записи на редактирование
      *

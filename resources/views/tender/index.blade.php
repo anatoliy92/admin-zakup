@@ -60,7 +60,7 @@
 									@if ($section->rubric == 1)
 										<td class="text-center">@if(!is_null($tender->rubric))@if(!is_null($tender->rubric->title_ru)){{ $tender->rubric->title_ru }}@else{{ str_limit(strip_tags($tender->rubric->description_ru), 70) }}@endif @endif</td>
 									@endif
-									<td>0</td>
+									<td> <a href="{{ route('adminzakup::sections.zakup.contractors', ['id' => $id, 'zakup_id' => $tender->id]) }}">{{ $tender->confirmed->count() }}</a></td>
 									<td class="text-center">
 										{{ date('Y-m-d H:i', strtotime($tender->published_at)) }}
 									</td>

@@ -20,6 +20,8 @@ Route::group(
 
         Route::get('sections/{id}/zakup/move/{zakup}', 'TenderController@move')->name('sections.zakup.move');
 
+        Route::get('sections/{id}/zakup/{zakup_id}/contractors', 'TenderController@contractors')->name('sections.zakup.contractors');
+
         Route::post('sections/{id}/zakup/move/{zakup}', 'TenderController@moveSave')->name('sections.zakup.move.save');
 
         Route::resource('sections/{id}/zakup', 'TenderController', ['as' => 'sections']);
