@@ -8,7 +8,7 @@ Route::group(
         Route::group(
             ['namespace' => 'Ajax', 'prefix' => 'ajax'],
             function () {
-                Route::post('/change-npa-date/{id}', 'NpaController@changeNpasDate');
+                // Route::post('/change-npa-date/{id}', 'NpaController@changeNpasDate');
 
                 /* маршруты для работы с медиа */
                 Route::post('zakup-images', 'MediaController@zakupImages');
