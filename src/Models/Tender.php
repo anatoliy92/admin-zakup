@@ -102,12 +102,12 @@ class Tender extends Model
         return $this->until_date < Carbon::now();
     }
 
-    public function isConfirmed($user) {
+    public function isConfirmed($user, $tender_id) {
         if (empty($user)) {
             return false;
         }
 
-        $confirmed = $this->confirmed->where('contract_id', $user->id)->where('confirm', 1)->all();
+        $confirmed = $this->confirmed->where('contract_id', $user->id)->where('confirm', 1)->where('tender_id', $tender_id)->all();
 
         return !empty($confirmed);
     }

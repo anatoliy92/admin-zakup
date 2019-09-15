@@ -94,16 +94,18 @@ class TenderController extends SectionsController
                 'DESC')->get(),
             'print'    => true,
             'isContractor' => false,
+            'isBlock' => false,
             'alias' => $alias,
         ];
 
         $user = Auth::user();
 
         if (!empty($user) && $user->isContractor()) {
-            $viewData['hideFiles'] = $data->media('hideFile')->where('lang', $this->lang)->where('good', 1)->orderBy(
+            $viewData['hideFiles'] = $data->hideFiles()->where('lang', $this->lang)->where('good', 1)->orderBy(
                 'sind',
                 'DESC')->get();
             $viewData['isContractor'] = true;
+            $viewData['isBlock'] = $user->contractor->block == 1;
         }
 
         return view(
