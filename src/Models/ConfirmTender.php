@@ -16,6 +16,6 @@ class ConfirmTender extends Model
 
     public function contractor()
     {
-        return $this->belongsTo('Avl\AdminZakup\Models\Contractor', 'contract_id', 'id');
+        return $this->belongsTo('Avl\AdminZakup\Models\Contractor', 'contract_id', 'user_id');
     }
 }
