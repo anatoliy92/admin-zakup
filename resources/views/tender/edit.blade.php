@@ -152,8 +152,10 @@
 																	<span class="input-group-text"><a href="#" class="deleteMedia" data-id="{{ $file['id'] }}"><i class="fa fa-trash-o"></i></a></span>
 																</div>
 																<input type="text" id="title--{{ $file['id'] }}" class="form-control" value="{{ $file['title_' . $file['lang'] ] }}">
+																{{ Form::text('', $file['published_at'] ? date('Y-m-d', strtotime($file['published_at'])) : null, ['class' => 'form-control datepicker', 'id' => 'file-published-at-' . $file['id']]) }}
+																{{ Form::text('', $file['published_at'] ? date('H:i', strtotime($file['published_at'])) : null, ['class' => 'form-control timepicker', 'id' => 'file-published-time-at-' . $file['id']]) }}
 																<div class="input-group-append">
-																	<a href="#" class="input-group-text save--file-name" data-id="{{ $file['id'] }}"><i class="fa fa-floppy-o"></i></a>
+																	<a href="#" class="input-group-text save--file" data-id="{{ $file['id'] }}"><i class="fa fa-floppy-o"></i></a>
 																</div>
 															</div>
 														</div>

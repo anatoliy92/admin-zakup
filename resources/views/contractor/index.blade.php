@@ -29,7 +29,7 @@
                         @foreach ($contractors as $contractor)
                             <tr class="position-relative" id="contractor--item-{{ $contractor->id }}">
                                 <td class="text-center">{{ ++$iteration }}</td>
-                                <td class="text-center">{{ $contractor->name }}</td>
+                                <td class="text-center"><a href="{{ route("adminzakup::tender.contractor.show", ['id' => $contractor->id]) }}">{{ $contractor->name }}</a></td>
                                 <td class="text-center">{{ $contractor->contact_name }}</td>
                                 <td class="text-center">{{ $contractor->phone }}</td>
                                 <td class="text-center">{{ $contractor->bin }}</td>

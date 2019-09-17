@@ -44,6 +44,22 @@ class ContractorController extends AvlController
             ]);
     }
 
+    /**
+     * Страница вывода списка поставщиков
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id, Request $request)
+    {
+        return view(
+            'adminzakup::contractor.show',
+            [
+                'langs' => $this->langs,
+                'contractor'   => Contractor::findOrFail($id),
+            ]);
+    }
+
     public function block($id, Request $request)
     {
         $contrator = Contractor::whereId($id)->firstOrFail();

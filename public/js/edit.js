@@ -233,4 +233,30 @@ $(document).ready(function() {
 			$('.until--date').attr({'disabled': true});
 		}
 	});
+
+	/* Обновление media */
+	$("body").on('click', '.save--file', function(e) {
+		e.preventDefault();
+		var id         = $(this).attr('data-id');
+		var title      = $("#title--" + id).val();
+		var fullTitle  = $("#full-title--" + id).val();
+		var published_at = $('#file-published-at-' + id).val();
+		var reg_number = $('#file-reg-number-' + id).val();
+		console.log(title);
+
+		$.ajax({
+			url: '/ajax/saveFile/'+ id,
+			type: 'POST',
+			async: false,
+			dataType: 'json',
+			data : { _token: $('meta[name="_token"]').attr('content'), title: title, published_at: published_at, fullTitle: fullTitle, regNumber: reg_number},
+			success: function(data) {
+				if (data.errors) {
+					messageError(data.errors);
+				} else {
+					messageSuccess(data.success);
+				}
+			}
+		});
+	});
 });
