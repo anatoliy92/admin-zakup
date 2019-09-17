@@ -8,13 +8,13 @@ Route::group(
         Route::group(
             ['namespace' => 'Ajax', 'prefix' => 'ajax'],
             function () {
-                // Route::post('/change-npa-date/{id}', 'NpaController@changeNpasDate');
+                Route::post('/change-zakup-type-file/{id}', 'MediaController@changeTypeFile');
 
                 /* маршруты для работы с медиа */
-                Route::post('zakup-images', 'MediaController@zakupImages');
+                // Route::post('zakup-images', 'MediaController@zakupImages');
                 Route::post('zakup-files', 'MediaController@zakupFiles');
-                Route::post('zakup-hide-images', 'MediaController@zakupHideImages');
-                Route::post('zakup-hide-files', 'MediaController@zakupHideFiles');
+                // Route::post('zakup-hide-images', 'MediaController@zakupHideImages');
+                // Route::post('zakup-hide-files', 'MediaController@zakupHideFiles');
                 /* маршруты для работы с медиа */
             });
 

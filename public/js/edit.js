@@ -48,6 +48,7 @@ $(document).ready(function() {
 						}
 				}
 		});
+
 		$('#upload-hide-photos').uploadifive({
 				'auto'			: true,
 				'removeCompleted' : true,
@@ -122,7 +123,7 @@ $(document).ready(function() {
 											'<div class="input-group">'+
 												'<div class="input-group-prepend">'+
 													'<span class="input-group-text"><a href="" class="change--lang" data-id="' + $data.file.id + '"><img src="/avl/img/icons/flags/'+ ( $data.file.lang ? $data.file.lang : 'null' ) +'--16.png"></a></span>'+
-													'<span class="input-group-text file-move" style="cursor: move;"><i class="fa fa-arrows"></i></span>'+
+													'<span class="input-group-text"><a href="" class="change--type" data-id="' + $data.file.id + '"><i class="fa '+ ( $data.file.type == 'file' ? 'fa-unlock' : 'fa-lock' ) +'"></i></a></span>' +
 													'<span class="input-group-text"><a href="#" class="good" data-model="App\\Models\\Media" data-id="' + $data.file.id + '"><i class="fa fa-eye"></i></a></span>'+
 													'<span class="input-group-text"><a href="/file/download/' + $data.file.id + '" target="_blank"><i class="fa fa-download"></i></a></span>'+
 													'<span class="input-group-text"><a href="#" class="deleteMedia" data-id="' + $data.file.id + '"><i class="fa fa-trash-o"></i></a></span>'+
@@ -189,6 +190,32 @@ $(document).ready(function() {
 						}
 				}
 		});
+
+		$('body').on('click', '.change--type', function(e) {
+			e.preventDefault();
+			var self = $(this);
+			var id = $(this).attr('data-id');
+
+			$.ajax({
+				url: '/ajax/change-zakup-type-file/' + id,
+				type: 'POST',
+				dataType: 'json',
+				data : { _token: $('meta[name="_token"]').attr('content')},
+				success: function(data) {
+					if (data.success) {
+						var fa = self.find('i.fa');
+						if (fa.hasClass('fa-unlock')) {
+							fa.removeClass('fa-unlock').addClass('fa-lock');
+						} else {
+							fa.removeClass('fa-lock').addClass('fa-unlock');
+						}
+						messageSuccess(data.success);
+					} else {
+						messageError(data.errors);
+					}
+				}
+			});
+		});
 	/* Загрузка медиа объектов */
 
 	$("body").on('click', '.change--updated-date', function (e) {
@@ -198,6 +225,7 @@ $(document).ready(function() {
 			$('.updated--date').attr({'disabled': true});
 		}
 	});
+
 	$("body").on('click', '.change--until-date', function (e) {
 		if ($(this).is(':checked')) {
 			$('.until--date').attr({'disabled': false});

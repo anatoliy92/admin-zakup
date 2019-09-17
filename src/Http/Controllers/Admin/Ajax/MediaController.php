@@ -97,7 +97,7 @@ class MediaController extends AvlController
 
         return ['errors' => ['Ошибка загрузки, обратитесь к администратору.']];
     }
-    
+
     protected function images(Request $request, $type = "image")
     {
         if ($request->Filedata->getSize() < config('adminzakup.max_file_size')) {
@@ -157,4 +157,17 @@ class MediaController extends AvlController
         return ['errors' => ['Размер фотографии не более <b>12-х</b> мегабайт.']];
     }
 
+    public function changeTypeFile ($id, Request $request)
+    {
+      $file = Media::find($id);
+
+      if (!is_null($file)) {
+        $file->type = $file->type == 'file' ? 'hideFile' : 'file' ;
+        if ($file->save()) {
+          return ['success' => ['Файл заблокирован / разблокирован.']];
+        }
+      }
+
+      return ['errors' => ['Ошибка, заблокирова/разблокировать не удалось.']];
+    }
 }

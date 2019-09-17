@@ -212,10 +212,10 @@ class TenderController extends AvlController
                 'id'      => $id,
                 'section' => $section,
                 'rubrics' => $section->rubrics()->orderBy('published_at', 'DESC')->get(),
-                'images'  => $tender->media('image')->orderBy('sind', 'DESC')->get(),
-                'files'   => $tender->media('file')->orderBy('sind', 'DESC')->get(),
-                'hideImages'  => $tender->media('hideImage')->orderBy('sind', 'DESC')->get(),
-                'hideFiles'   => $tender->media('hideFile')->orderBy('sind', 'DESC')->get(),
+                // 'images'  => $tender->media('image')->orderBy('sind', 'DESC')->get(),
+                'files'   => $tender->media('file')->orWhere('type', 'hideFile')->orderBy('sind', 'DESC')->get(),
+                // 'hideImages'  => $tender->media('hideImage')->orderBy('sind', 'DESC')->get(),
+                // 'hideFiles'   => $tender->media('hideFile')->orderBy('sind', 'DESC')->get(),
                 'langs'   => $this->langs,
             ]);
     }

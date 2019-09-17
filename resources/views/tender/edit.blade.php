@@ -21,7 +21,7 @@
 					{!! csrf_field(); !!}
 					{{ method_field('PUT') }}
 					<input id="section_id" type="hidden" name="section_id" value="{{ $tender->section_id }}">
-					<input id="model-name" type="hidden" value="Avl\AdminNews\Models\News">
+					<input id="model-name" type="hidden" value="Avl\AdminZakup\Models\Tender">
 					<input id="model-id" type="hidden" name="zakup_id" value="{{ $tender->id }}">
 
 					<div class="row">
@@ -81,14 +81,10 @@
 								<a class="nav-link @if($lang->key == 'ru') active show @endif" href="#title_{{ $lang->key }}" data-toggle="tab">{{ $lang->name }}</a>
 							</li>
 						@endforeach
-						@if (array_key_exists('image', $section->modules ?? []))
-								<li class="nav-item"><a class="nav-link" href="#image" data-toggle="tab">Изображения</a></li>
-								<li class="nav-item"><a class="nav-link" href="#hideImage" data-toggle="tab">Скрытые изображения</a></li>
-							@endif
 						@if (array_key_exists('file', $section->modules ?? []))
-								<li class="nav-item"><a class="nav-link" href="#file" data-toggle="tab">Файлы</a></li>
-								<li class="nav-item"><a class="nav-link" href="#hideFile" data-toggle="tab">Скрытые файлы</a></li>
-							@endif
+							<li class="nav-item"><a class="nav-link" href="#file" data-toggle="tab">Документы</a></li>
+							{{-- <li class="nav-item"><a class="nav-link" href="#hideFile" data-toggle="tab">Скрытые файлы</a></li> --}}
+						@endif
 					</ul>
 					<div class="tab-content">
 						@foreach ($langs as $lang)
@@ -128,86 +124,7 @@
 								</div>
 							</div>
 						@endforeach
-						@if (array_key_exists('image', $section->modules ?? []))
-							<div class="tab-pane" id="image" role="tabpanel">
-								<div class="block--file-upload">
-									<input id="upload-photos" name="upload" type="file" />
-								</div>
-								<div class="row">
-									<div class="photo--zakup col-lg-12">
-										<ul id="sortable" class="row list-unstyled">
-											@foreach ($images as $image)
-												<li class="col-6 col-sm-4 col-xl-3 col-xxl-2" id="mediaSortable_{{ $image['id'] }}">
-													<div class="card card-stat">
-														<div class="card-header">
-															<div class="row">
-																<div class="col-4 text-left">
-																	<a href="#" class="change--status" data-model="App\Models\Media" data-id="{{ $image['id'] }}"><i class="fa fa-eye{{ ($image['good'] == 0) ? '-slash' : '' }}"></i></a>
-																</div>
-																<div class="col-4 text-center">
-																	<a href="#" class="toMainPhoto" data-model="Media" data-id="{{ $image['id'] }}"><i class="fa {{ ($image['main'] == 1) ? 'fa-check-circle-o' : 'fa-circle-o' }}"></i></a>
-																</div>
-																<div class="col-4 text-right">
-																	<a href="" class="change--lang" data-id="{{ $image['id'] }}"><img src="/avl/img/icons/flags/{{ $image['lang'] ?? 'null' }}--16.png"></a>
-																</div>
-															</div>
-														</div>
-														<div class="card-body p-0">
-															<img src="/image/resize/200/190/{{ $image['url'] }}">
-														</div>
-														<div class="card-footer">
-															<div class="row">
-																<div class="col-6 text-left"><a href="#" class="deleteMedia" data-id="{{ $image['id'] }}"><i class="fa fa-trash-o"></i></a></div>
-																<div class="col-6 text-right"><a href="#" class="open--modal-translates" data-id="{{ $image['id'] }}" data-toggle="modal" data-target="#translates-modal"><i class="fa fa-pencil"></i></a></div>
-															</div>
-														</div>
-													</div>
-												</li>
-											@endforeach
-										</ul>
-									</div>
-								</div>
-							</div>
-						<div class="tab-pane" id="hideImage" role="tabpanel">
-								<div class="block--file-upload">
-									<input id="upload-hide-photos" name="upload" type="file" />
-								</div>
-								<div class="row">
-									<div class="photo--zakup col-lg-12">
-										<ul id="sortable-hide" class="row list-unstyled">
-											@foreach ($hideImages as $image)
-												<li class="col-6 col-sm-4 col-xl-3 col-xxl-2" id="mediaSortable_{{ $image['id'] }}">
-													<div class="card card-stat">
-														<div class="card-header">
-															<div class="row">
-																<div class="col-4 text-left">
-																	<a href="#" class="change--status" data-model="App\Models\Media" data-id="{{ $image['id'] }}"><i class="fa fa-eye{{ ($image['good'] == 0) ? '-slash' : '' }}"></i></a>
-																</div>
-																<div class="col-4 text-center">
-																	<a href="#" class="toMainPhoto" data-model="Media" data-id="{{ $image['id'] }}"><i class="fa {{ ($image['main'] == 1) ? 'fa-check-circle-o' : 'fa-circle-o' }}"></i></a>
-																</div>
-																<div class="col-4 text-right">
-																	<a href="" class="change--lang" data-id="{{ $image['id'] }}"><img src="/avl/img/icons/flags/{{ $image['lang'] ?? 'null' }}--16.png"></a>
-																</div>
-															</div>
-														</div>
-														<div class="card-body p-0">
-															<img src="/image/resize/200/190/{{ $image['url'] }}">
-														</div>
-														<div class="card-footer">
-															<div class="row">
-																<div class="col-6 text-left"><a href="#" class="deleteMedia" data-id="{{ $image['id'] }}"><i class="fa fa-trash-o"></i></a></div>
-																<div class="col-6 text-right"><a href="#" class="open--modal-translates" data-id="{{ $image['id'] }}" data-toggle="modal" data-target="#translates-modal"><i class="fa fa-pencil"></i></a></div>
-															</div>
-														</div>
-													</div>
-												</li>
-											@endforeach
-										</ul>
-									</div>
-								</div>
-							</div>
-						@endif
+
 						@if (array_key_exists('file', $section->modules ?? []))
 							<div class="tab-pane" id="file" role="tabpanel">
 								<div class="block--file-upload block--file-upload-zakup position-relative">
@@ -229,7 +146,7 @@
 															<div class="input-group">
 																<div class="input-group-prepend">
 																	<span class="input-group-text"><a href="" class="change--lang" data-id="{{ $file['id'] }}"><img src="/avl/img/icons/flags/{{ $file['lang'] ?? 'null' }}--16.png"></a></span>
-																	<span class="input-group-text file-move" style="cursor: move;"><i class="fa fa-arrows"></i></span>
+																	<span class="input-group-text"><a href="" class="change--type" data-id="{{ $file['id'] }}"><i class="fa {{ $file['type'] == 'file' ? 'fa-unlock' : 'fa-lock' }}"></i></a></span>
 																	<span class="input-group-text"><a href="#" class="change--status" data-model="App\Models\Media" data-id="{{ $file['id'] }}"><i class="fa @if($file['good'] == 1){{ 'fa-eye' }}@else{{ 'fa-eye-slash' }}@endif"></i></a></span>
 																	<span class="input-group-text"><a href="/file/download/{{ $file['id'] }}" target="_blank"><i class="fa fa-download"></i></a></span>
 																	<span class="input-group-text"><a href="#" class="deleteMedia" data-id="{{ $file['id'] }}"><i class="fa fa-trash-o"></i></a></span>
@@ -243,10 +160,15 @@
 													</li>
 											@endforeach
 										</ul>
+										<small class="d-block border-top pt-2 mt-2 text-muted">
+											<i class="fa fa-lock"></i> - для пользователей которые подали заявку на участие <br/>
+											<i class="fa fa-unlock"></i> - для всех пользователей
+										</small>
 									</div>
 								</div>
 							</div>
-						<div class="tab-pane" id="hideFile" role="tabpanel">
+
+							{{-- <div class="tab-pane" id="hideFile" role="tabpanel">
 								<div class="block--file-upload block--file-upload-zakup position-relative">
 									<div class="form-group">
 										<select class="form-control" id="select--language-hide-file">
@@ -282,7 +204,7 @@
 										</ul>
 									</div>
 								</div>
-							</div>
+							</div> --}}
 						@endif
 					</div>
 				</form>
