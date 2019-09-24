@@ -56,6 +56,20 @@
 								{{ Form::text('zakup_until_time', $tender->until_date ? date('H:i', strtotime($tender->until_date)) : null, ['class' => 'form-control timepicker until--date', 'disabled' => !$tender->until_date ? true : false]) }}
 							</div>
 						</div>
+						@php $organizations = getManualItems('tender'); @endphp
+						@if ($organizations)
+							<div class="col-12">
+								<div class="form-group">
+									<label>Организация</label>
+									<select class="form-control" name="organization">
+										<option value="0">---</option>
+										@foreach ($organizations as $organization)
+												<option value="{{ $organization->id }}" @if($tender->organization == $organization->id){{ 'selected' }}@endif>{{ $organization->title_ru }}</option>
+										@endforeach
+									</select>
+								</div>
+							</div>
+						@endif
 
 						@if ($section->rubric == 1)
 							<div class="col-12">

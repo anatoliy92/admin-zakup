@@ -129,6 +129,10 @@ class TenderController extends AvlController
             $record->rubric_id = $post['zakup_rubric_id'];    // проставляему рубрику если ее выбрали
         }
 
+        if (isset($post['organization']) && ($post['organization'] > 0)) {
+            $record->organization = $post['organization'];
+        }
+
         if ($record->save()) {
             switch ($post['button']) {
                 case 'add':
@@ -268,6 +272,12 @@ class TenderController extends AvlController
             $tender->rubric_id = $post['zakup_rubric_id'];
         } else {
             $tender->rubric_id = null;
+        }
+
+        if (isset($post['organization']) && ($post['organization'] > 0)) {
+            $tender->organization = $post['organization'];
+        } else {
+            $tender->organization = null;
         }
 
         if ($tender->save()) {
