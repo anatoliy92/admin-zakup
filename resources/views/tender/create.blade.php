@@ -63,6 +63,20 @@
 							{{ Form::text('zakup_until_time', null, ['class' => 'form-control timepicker until--date', 'disabled' => true]) }}
 						</div>
 					</div>
+					@php $organizations = getManualItems('tender'); @endphp
+					@if ($organizations)
+						<div class="col-12">
+							<div class="form-group">
+								<label>Организация</label>
+								<select class="form-control" name="organization">
+									<option value="0">---</option>
+									@foreach ($organizations as $organization)
+										<option value="{{ $organization->id }}">{{ $organization->title_ru }}</option>
+									@endforeach
+								</select>
+							</div>
+						</div>
+					@endif
 
 					@if ($section->rubric == 1)
 						<div class="col-12">
