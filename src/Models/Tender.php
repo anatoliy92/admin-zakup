@@ -19,6 +19,12 @@ class Tender extends Model
 
     protected $lang      = null;
 
+    protected $_statuses = [
+        "Не выбран",
+        "Не состоялся",
+        "Состоялся",
+    ];
+
     public function __construct()
     {
         $this->lang = LaravelLocalization::getCurrentLocale();
@@ -115,5 +121,15 @@ class Tender extends Model
     public function isAllowConfirm()
     {
         return Carbon::now()->add('-1', 'day')->lessThan($this->until_date);
+    }
+
+    public function getStatusValue()
+    {
+        return $this->_statuses[$this->status];
+    }
+
+    public function getStatuses()
+    {
+        return $this->_statuses;
     }
 }

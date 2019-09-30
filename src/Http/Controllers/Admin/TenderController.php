@@ -78,7 +78,8 @@ class TenderController extends AvlController
                 'langs'   => $this->langs,
                 'section' => $section,
                 'rubrics' => $section->rubrics()->orderBy('published_at', 'DESC')->get(),
-                'id'      => $id
+                'tender'  => new Tender(),
+                'id'      => $id,
             ]);
     }
 
@@ -132,6 +133,8 @@ class TenderController extends AvlController
         if (isset($post['organization']) && ($post['organization'] > 0)) {
             $record->organization = $post['organization'];
         }
+
+        $record->status = $post['status'];
 
         if ($record->save()) {
             switch ($post['button']) {
@@ -279,6 +282,8 @@ class TenderController extends AvlController
         } else {
             $tender->organization = null;
         }
+
+        $tender->status = $post['status'];
 
         if ($tender->save()) {
             return redirect()->route(

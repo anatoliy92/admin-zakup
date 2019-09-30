@@ -78,6 +78,19 @@
 						</div>
 					@endif
 
+
+					<div class="col-12">
+						<div class="form-group">
+							<label>Статус</label>
+							<select class="form-control" name="status">
+								<option value="0">---</option>
+								@foreach ($tender->getStatuses() as $key => $status)
+									<option value="{{ $key }}" @if($tender->status == $key){{ 'selected' }}@endif>{{ $status }}</option>
+								@endforeach
+							</select>
+						</div>
+					</div>
+
 					@if ($section->rubric == 1)
 						<div class="col-12">
 							<div class="form-group">
