@@ -44,20 +44,13 @@ class TenderController extends AvlController
 
         $this->authorize('view', $section);
 
-        return view(
-            'adminzakup::tender.index',
-            [
-                'id'      => $id,
-                'section' => $section,
-                'request' => $request,
-                'langs'   => $this->langs,
-                'tenders' => $this->getQuery($section->tender(), $request)->paginate(30),
-                'rubrics' => array_add(
-                    toSelectTransform(
-                        Rubrics::select('id', 'title_ru')->where('section_id', $section->id)->get()->toArray()),
-                    0,
-                    'Закупки без рубрики'),
-            ]);
+        return view('adminzakup::tender.index', [
+            'id'      => $id,
+            'section' => $section,
+            'request' => $request,
+            'langs'   => $this->langs,
+            'tenders' => $this->getQuery($section->tender(), $request)->paginate(30)
+        ]);
     }
 
     /**
@@ -95,19 +88,17 @@ class TenderController extends AvlController
 
         $post = $request->input();
 
-        $this->validate(
-            request(),
-            [
-                'button'                 => 'required|in:add,save,edit',
-                'zakup_rubric_id'          => 'sometimes',
-                'zakup_short_ru'           => '',
-                'zakup_full_ru'            => '',
-                'zakup_title_ru'           => 'max:255',
-                'zakup_published_at'       => 'required|date_format:"Y-m-d"',
-                'zakup_published_time'     => 'required|date_format:"H:i"',
-                'zakup_until_date'         => 'date_format:"Y-m-d"',
-                'zakup_until_time'         => 'date_format:"H:i"',
-            ]);
+        $this->validate(request(), [
+            'button'                 => 'required|in:add,save,edit',
+            'zakup_rubric_id'          => 'sometimes',
+            'zakup_short_ru'           => '',
+            'zakup_full_ru'            => '',
+            'zakup_title_ru'           => 'max:255',
+            'zakup_published_at'       => 'required|date_format:"Y-m-d"',
+            'zakup_published_time'     => 'required|date_format:"H:i"',
+            'zakup_until_date'         => 'date_format:"Y-m-d"',
+            'zakup_until_time'         => 'date_format:"H:i"',
+        ]);
 
         $record               = new Tender();
         $record->section_id   = $id;
@@ -115,7 +106,6 @@ class TenderController extends AvlController
         $record->published_at = $post['zakup_published_at'] . ' ' . $post['zakup_published_time'];
 
         foreach ($this->langs as $lang) {
-            $record->{'good_' . $lang->key}  = $post['zakup_good_' . $lang->key];
             $record->{'title_' . $lang->key} = $post['zakup_title_' . $lang->key];
             $record->{'short_' . $lang->key} = $post['zakup_short_' . $lang->key];
             $record->{'full_' . $lang->key}  = $post['zakup_full_' . $lang->key];
@@ -132,31 +122,22 @@ class TenderController extends AvlController
         if (isset($post['organization']) && ($post['organization'] > 0)) {
             $record->organization = $post['organization'];
         }
+        if (isset($post['sposob']) && ($post['sposob'] > 0)) {
+            $record->sposob = $post['sposob'];
+        }
+        if (isset($post['status']) && ($post['status'] > 0)) {
+            $record->status = $post['status'];
+        }
 
         if ($record->save()) {
             switch ($post['button']) {
-                case 'add':
-                    {
-                        return redirect()->route('adminzakup::sections.zakup.create', ['id' => $id])->with(
-                            ['success' => ['Сохранение прошло успешно!']]);
-                    }
-                case 'edit':
-                    {
-                        return redirect()->route(
-                            'adminzakup::sections.zakup.edit',
-                            ['id' => $id, 'zakup_id' => $record->id])->with(
-                            ['success' => ['Сохранение прошло успешно!']]);
-                    }
-                default:
-                    {
-                        return redirect()->route('adminzakup::sections.zakup.index', ['id' => $id])->with(
-                            ['success' => ['Сохранение прошло успешно!']]);
-                    }
+                case 'add': { return redirect()->route('adminzakup::sections.zakup.create', ['id' => $id])->with(['success' => ['Сохранение прошло успешно!']]); }
+                case 'edit': { return redirect()->route('adminzakup::sections.zakup.edit', ['id' => $id, 'zakup_id' => $record->id])->with(['success' => ['Сохранение прошло успешно!']]); }
+                default: { return redirect()->route('adminzakup::sections.zakup.index', ['id' => $id])->with(['success' => ['Сохранение прошло успешно!']]); }
             }
         }
 
-        return redirect()->route('adminzakup::sections.zakup.create', ['id' => $id])->with(
-            ['errors' => ['Что-то пошло не так.']]);
+        return redirect()->route('adminzakup::sections.zakup.create', ['id' => $id])->with(['errors' => ['Что-то пошло не так.']]);
     }
 
     /**
@@ -215,7 +196,6 @@ class TenderController extends AvlController
                 'tender'     => $tender,
                 'id'      => $id,
                 'section' => $section,
-                'rubrics' => $section->rubrics()->orderBy('published_at', 'DESC')->get(),
                 // 'images'  => $tender->media('image')->orderBy('sind', 'DESC')->get(),
                 'files'   => $tender->media('file')->orWhere('type', 'hideFile')->orderBy('sind', 'DESC')->get(),
                 // 'hideImages'  => $tender->media('hideImage')->orderBy('sind', 'DESC')->get(),
@@ -256,7 +236,6 @@ class TenderController extends AvlController
         $tender->update_user  = Auth::user()->id;
 
         foreach ($this->langs as $lang) {
-            $tender->{'good_' . $lang->key}  = $post['zakup_good_' . $lang->key];
             $tender->{'title_' . $lang->key} = $post['zakup_title_' . $lang->key];
             $tender->{'short_' . $lang->key} = $post['zakup_short_' . $lang->key];
             $tender->{'full_' . $lang->key}  = $post['zakup_full_' . $lang->key];
@@ -278,6 +257,18 @@ class TenderController extends AvlController
             $tender->organization = $post['organization'];
         } else {
             $tender->organization = null;
+        }
+
+        if (isset($post['sposob']) && ($post['sposob'] > 0)) {
+            $tender->sposob = $post['sposob'];
+        } else {
+            $tender->sposob = null;
+        }
+
+        if (isset($post['status']) && ($post['status'] > 0)) {
+            $tender->status = $post['status'];
+        } else {
+            $tender->status = null;
         }
 
         if ($tender->save()) {

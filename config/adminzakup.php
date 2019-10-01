@@ -15,12 +15,12 @@ return [
 	/**
 	 * Путь к каталогу с изображениями
 	 */
-	'path_to_image' => 'data/media/npa/images',
+	'path_to_image' => 'data/media/zakup/images',
 
 	/**
 	 * Путь к каталогу с файлами
 	 */
-	'path_to_file' => 'data/media/npa/files',
+	'path_to_file' => 'data/media/zakup/files',
 
 	/**
 	 * Формат возможных для загрузки изображений

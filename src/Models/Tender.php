@@ -15,12 +15,14 @@ class Tender extends Model
 
     protected $modelName = __CLASS__;
 
-    protected $fillable  = ['title_ru'];
+    protected $guarded = [];
 
-    protected $lang      = null;
+    protected $lang = null;
 
-    public function __construct()
+    public function __construct(array $attributes = [])
     {
+        parent::__construct($attributes);
+
         $this->lang = LaravelLocalization::getCurrentLocale();
     }
 
@@ -62,13 +64,6 @@ class Tender extends Model
     public function getUpdatedAtAttribute($value)
     {
         return (!is_null($this->updated_date)) ? $this->updated_date : $value;
-    }
-
-    public function getGoodAttribute($value, $lang = null)
-    {
-        $good = (!is_null($lang)) ? $lang : $this->lang;
-
-        return ($this->{'good_' . $good}) ? $this->{'good_' . $good} : $this->good_ru;
     }
 
     public function getTitleAttribute($value, $lang = null)

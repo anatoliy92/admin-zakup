@@ -56,33 +56,35 @@
 								{{ Form::text('zakup_until_time', $tender->until_date ? date('H:i', strtotime($tender->until_date)) : null, ['class' => 'form-control timepicker until--date', 'disabled' => !$tender->until_date ? true : false]) }}
 							</div>
 						</div>
-						@php $organizations = getManualItems('tender'); @endphp
+						@php $organizations = getManualItems('zakup-organizations'); @endphp
 						@if ($organizations)
-							<div class="col-12">
+							@php $organizations = toSelectTransform($organizations->toArray()); @endphp
+							<div class="col-4">
+								<label>Выберите организатора</label>
 								<div class="form-group">
-									<label>Организация</label>
-									<select class="form-control" name="organization">
-										<option value="0">---</option>
-										@foreach ($organizations as $organization)
-												<option value="{{ $organization->id }}" @if($tender->organization == $organization->id){{ 'selected' }}@endif>{{ $organization->title_ru }}</option>
-										@endforeach
-									</select>
+									{!! Form::select('organization', $organizations, $tender->organization ?? null, ['class' => 'form-control', 'placeholder' => 'Выберите организатора']) !!}
 								</div>
 							</div>
 						@endif
 
-						@if ($section->rubric == 1)
-							<div class="col-12">
+						@php $methods = getManualItems('zakup-method'); @endphp
+						@if (!is_null($methods))
+							@php $methods = toSelectTransform($methods->toArray()); @endphp
+							<div class="col-4">
 								<div class="form-group">
-									<label>Рубрика</label>
-									<select class="form-control" name="zakup_rubric_id">
-										<option value="0">---</option>
-										@if (!is_null($rubrics))
-											@foreach ($rubrics as $rubric)
-												<option value="{{ $rubric->id }}" @if(old('zakup_rubric_id') == $rubric->id){{ 'selected' }}@elseif($tender->rubric_id == $rubric->id){{ 'selected' }}@endif>{{ !is_null($rubric->title_ru) ? $rubric->title_ru : str_limit(strip_tags($rubric->description_ru), 100) }}</option>
-											@endforeach
-										@endif
-									</select>
+									<label>Способ закупа</label>
+									{!! Form::select('sposob', $methods, $tender->sposob ?? null , ['class' => 'form-control', 'placeholder' => 'Выберите способ закупа']) !!}
+								</div>
+							</div>
+						@endif
+
+						@php $statuses = getManualItems('zakup-statuses'); @endphp
+						@if (!is_null($statuses))
+							@php $statuses = toSelectTransform($statuses->toArray()); @endphp
+							<div class="col-4">
+								<div class="form-group">
+									<label>Статус закупа</label>
+									{!! Form::select('status', $statuses, $tender->status ?? null , ['class' => 'form-control', 'placeholder' => 'Выберите статус']) !!}
 								</div>
 							</div>
 						@endif
@@ -110,18 +112,7 @@
 								<div class="tab-content">
 									<div class="tab-pane active show"  id="sub-tab_{{ $lang->key }}-index" role="tabpanel">
 										<div class="row">
-											<div class="col-1">
-												<div class="form-group">
-													<label for="zakup_good_{{ $lang->key }}">Вкл / Выкл</label><br/>
-													<label class="switch switch-3d switch-primary">
-														<input name='zakup_good_{{ $lang->key }}' type='hidden' value='0'>
-														<input type="checkbox" class="switch-input" name="zakup_good_{{ $lang->key }}" value="1" @if ($tender->{'good_' . $lang->key} == 1) checked @endif>
-														<span class="switch-label"></span>
-														<span class="switch-handle"></span>
-													</label>
-												</div>
-											</div>
-											<div class="col-11">
+											<div class="col-12">
 												<div class="form-group">
 													{{ Form::label(null, 'Заголовок') }}
 													{{ Form::text('zakup_title_' . $lang->key, $tender->{'title_' . $lang->key} ?? null, ['class' => 'form-control']) }}
